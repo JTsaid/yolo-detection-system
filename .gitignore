@@ -21,11 +21,12 @@ wheels/
 *.egg
 MANIFEST
 
-# Virtual Environment
+# 虚拟环境
 .venv/
 venv/
 ENV/
 env/
+.virtualenv/
 
 # IDE
 .vscode/
@@ -35,33 +36,50 @@ env/
 *~
 .DS_Store
 
-# Logs
-logs/*.log
+# 日志文件
 *.log
+logs/*.log
 
-# YOLO outputs
-runs/
-reports/*.png
-reports/*.jpg
-
-# Temporary files
+# 临时文件
 *.tmp
 *.temp
 temp/
 tmp/
 
-# Model weights (optional - uncomment if you want to exclude)
+# 模型文件（可选，如果模型文件太大）
 # *.pt
-# *.pth
-# *.weights
+# *.onnx
+# *.engine
 
-# Demo videos (large files)
+# 视频文件（避免提交大文件）
+*.mp4
+*.avi
+*.mov
+*.mkv
 demo_videos/*.mp4
 demo_videos/*.avi
 
-# System files
-Thumbs.db
-.DS_Store
+# 检测结果
+runs/
+reports/
+output/
 
-# Kiro IDE
-.kiro/
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb
+
+# 测试覆盖率
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# 系统文件
+Thumbs.db
+Desktop.ini

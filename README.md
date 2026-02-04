@@ -47,59 +47,191 @@
 
 ## 🚀 快速开始
 
-### Windows系统
+### 前置要求
 
-双击运行 `start.bat` 即可启动
+- Python 3.8 或更高版本
+- pip 包管理器
+- （可选）CUDA 支持的 GPU（用于加速）
 
-### Linux/Mac系统
+### 方法一：一键启动（推荐）
 
+#### Windows 系统
 ```bash
-bash start.sh
+# 双击运行
+start.bat
 ```
 
-### 手动启动
-
-1. **安装依赖**
-
+#### Linux/Mac 系统
 ```bash
+# 添加执行权限（首次运行）
+chmod +x start.sh
+
+# 启动应用
+./start.sh
+```
+
+### 方法二：手动启动
+
+#### 1. 克隆项目
+```bash
+git clone https://github.com/JTsaid/yolo-detection-system.git
+cd yolo-detection-system
+```
+
+#### 2. 创建虚拟环境（推荐）
+```bash
+# Windows
+python -m venv .venv
+.venv\Scripts\activate
+
+# Linux/Mac
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+#### 3. 安装依赖
+```bash
+# 使用国内镜像源（推荐，速度更快）
+pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+# 或使用默认源
 pip install -r requirements.txt
 ```
 
-2. **启动应用**
+**依赖说明**：
+- `ultralytics` - YOLO11 模型库
+- `flask` - Web 框架
+- `torch` & `torchvision` - PyTorch 深度学习框架
+- `opencv-python` - 图像处理
+- `pillow` - 图像读取
+- `numpy` - 数值计算
 
+#### 4. 下载模型文件（自动）
+
+首次运行时，程序会自动下载 `yolo11n.pt` 模型文件（约 6MB）。
+
+如果自动下载失败，可手动下载：
+```bash
+# 方法1：使用 wget
+wget https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11n.pt
+
+# 方法2：使用 curl
+curl -L -o yolo11n.pt https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11n.pt
+```
+
+将下载的 `yolo11n.pt` 文件放在项目根目录。
+
+#### 5. 启动应用
 ```bash
 python app.py
 ```
 
-3. **访问应用**
+#### 6. 访问应用
 
-浏览器打开 http://127.0.0.1:7860
+启动成功后，在浏览器中打开：
+```
+http://127.0.0.1:7860
+```
+
+你会看到类似以下的启动信息：
+```
+============================================================
+YOLO目标检测系统启动
+访问地址: http://127.0.0.1:7860
+============================================================
+```
+
+### 🎬 下载演示视频（可选）
+
+运行以下脚本下载测试视频：
+
+```bash
+# Windows
+download_videos.bat
+
+# Linux/Mac
+bash download_videos.bat
+```
+
+演示视频会保存在 `demo_videos/` 目录中。
 
 ## 📖 使用说明
+
+### 快速测试
+
+**首次使用建议流程**：
+
+1. **测试图片检测**（最快，5秒出结果）
+   - 切换到"图片检测"标签
+   - 上传一张包含人、车辆或动物的图片
+   - 点击"开始检测"
+   - 查看右侧标注结果
+
+2. **测试视频检测**（需要1-2分钟）
+   - 切换到"视频检测"标签
+   - 上传一个短视频（建议10-30秒）
+   - 等待处理完成
+   - 播放查看标注视频
+
+3. **测试摄像头检测**（实时）
+   - 切换到"摄像头检测"标签
+   - 点击"启动摄像头"
+   - 允许浏览器访问摄像头
+   - 实时查看检测效果
 
 ### 图片检测
 
 1. 切换到"图片检测"标签
-2. 点击"选择文件"上传图片
-3. 调整置信度阈值（可选）
+2. 点击"选择文件"上传图片（支持 JPG、PNG、BMP 等格式）
+3. 调整置信度阈值（可选，默认 0.25）
+   - 值越高，检测越严格，误报越少
+   - 值越低，检测越宽松，可能漏检
 4. 点击"开始检测"
 5. 左侧显示原图，右侧显示检测结果
+6. 查看底部统计信息（检测到的物体及置信度）
+
+**推荐测试图片**：
+- 街道场景（检测车辆、行人）
+- 室内场景（检测家具、电子设备）
+- 动物照片（检测猫、狗等宠物）
 
 ### 视频检测
 
 1. 切换到"视频检测"标签
-2. 点击"选择文件"上传视频
+2. 点击"选择文件"上传视频（支持 MP4、AVI、MOV 等格式）
 3. 调整置信度阈值（可选）
 4. 点击"开始检测"
-5. 等待处理完成，右侧自动播放检测结果视频
+5. 等待处理完成（处理时间取决于视频长度）
+   - 10秒视频约需 30-60 秒
+   - 30秒视频约需 1-2 分钟
+6. 右侧自动播放检测结果视频
+7. 查看底部统计信息（总帧数、检测统计）
+
+**视频处理提示**：
+- 建议使用 10-60 秒的短视频测试
+- 视频分辨率建议 720p 或 1080p
+- 文件大小建议 < 50MB
 
 ### 摄像头检测
 
 1. 切换到"摄像头检测"标签
 2. 点击"启动摄像头"
-3. 允许浏览器访问摄像头
-4. 实时查看检测结果
-5. 点击"停止检测"结束
+3. 允许浏览器访问摄像头（首次使用会弹出权限请求）
+4. 左侧显示摄像头画面，右侧实时显示检测结果
+5. 调整置信度阈值可实时改变检测灵敏度
+6. 点击"停止检测"结束
+
+**摄像头检测特点**：
+- ⚡ 实时检测，300ms 响应速度
+- 🎯 自动追踪移动物体
+- 📊 实时更新检测统计
+- 🎨 流畅渲染，无闪烁
+
+**最佳实践**：
+- 确保光线充足
+- 保持摄像头稳定
+- 物体距离适中（1-5米）
+- 避免背景过于复杂
 
 ## 📁 项目结构
 
@@ -194,32 +326,117 @@ YOLO11 基于 COCO 数据集训练，可以检测以下类别：
 
 ### 1. 端口被占用
 
-修改 `app.py` 中的端口号，或关闭占用7860端口的程序
+**错误信息**：`Address already in use` 或 `端口 7860 已被占用`
+
+**解决方法**：
+```bash
+# 方法1：修改端口
+# 编辑 app.py 最后一行，将 7860 改为其他端口（如 8080）
+app.run(host='127.0.0.1', port=8080, debug=False)
+
+# 方法2：关闭占用端口的程序
+# Windows
+netstat -ano | findstr :7860
+taskkill /PID <进程ID> /F
+
+# Linux/Mac
+lsof -i :7860
+kill -9 <进程ID>
+```
 
 ### 2. 模型下载失败
 
-手动下载模型文件并放在项目根目录：
-- [yolo11n.pt 下载地址](https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11n.pt)
+**错误信息**：`Failed to download yolo11n.pt`
 
-### 3. 摄像头无法访问
-
-- 确保浏览器有摄像头权限
-- 使用HTTPS或localhost访问
-- 检查是否有其他程序占用摄像头
-
-### 4. 视频处理速度慢
-
-- 使用更小的模型（yolo11n.pt）
-- 降低视频分辨率
-- 使用GPU加速（需安装CUDA版PyTorch）
-
-### 5. 依赖安装失败
-
-建议使用国内镜像源：
-
+**解决方法**：
 ```bash
-pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+# 手动下载模型文件
+wget https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11n.pt
+
+# 或使用浏览器下载后放到项目根目录
 ```
+
+**备用下载地址**：
+- [GitHub Release](https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11n.pt)
+- [百度网盘](https://pan.baidu.com) - 搜索 "yolo11n.pt"
+
+### 3. 依赖安装失败
+
+**错误信息**：`pip install` 超时或失败
+
+**解决方法**：
+```bash
+# 使用国内镜像源
+pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+# 或使用阿里云镜像
+pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
+
+# 如果 torch 安装失败，单独安装 CPU 版本
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+```
+
+### 4. 摄像头无法访问
+
+**错误信息**：`无法访问摄像头` 或 `Permission denied`
+
+**解决方法**：
+- ✅ 确保浏览器有摄像头权限（浏览器设置 → 隐私 → 摄像头）
+- ✅ 使用 `http://localhost:7860` 或 `http://127.0.0.1:7860` 访问
+- ✅ 检查是否有其他程序占用摄像头（如 Zoom、Teams）
+- ✅ 尝试使用 Chrome 或 Edge 浏览器
+
+### 5. 视频处理速度慢
+
+**现象**：视频检测需要很长时间
+
+**优化方法**：
+```python
+# 方法1：使用更小的模型（编辑 app.py）
+model = YOLO("yolo11n.pt")  # 最快（当前使用）
+# model = YOLO("yolo11s.pt")  # 较快
+# model = YOLO("yolo11m.pt")  # 中等
+
+# 方法2：降低视频分辨率
+# 在上传前使用视频编辑工具将分辨率降至 720p
+
+# 方法3：使用 GPU 加速（需要 NVIDIA GPU）
+# 安装 CUDA 版本的 PyTorch
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
+```
+
+### 6. 内存不足
+
+**错误信息**：`Out of memory` 或 `MemoryError`
+
+**解决方法**：
+- 使用更小的模型（yolo11n.pt）
+- 减小输入图片/视频的分辨率
+- 关闭其他占用内存的程序
+- 增加系统虚拟内存
+
+### 7. Python 版本不兼容
+
+**错误信息**：`SyntaxError` 或版本相关错误
+
+**解决方法**：
+```bash
+# 检查 Python 版本（需要 3.8+）
+python --version
+
+# 如果版本过低，安装新版本
+# Windows: 从 python.org 下载安装
+# Linux: sudo apt install python3.10
+# Mac: brew install python@3.10
+```
+
+### 8. 检测结果不准确
+
+**优化建议**：
+- 📊 调整置信度阈值（默认 0.25，可调至 0.3-0.5）
+- 🎯 使用更大的模型（yolo11m.pt 或 yolo11l.pt）
+- 💡 确保图片/视频光线充足、清晰度高
+- 🔍 对于小目标，使用更高分辨率的输入
 
 ## 📝 技术栈
 
